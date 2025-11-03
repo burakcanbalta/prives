@@ -259,27 +259,6 @@ make build-dev
 
 A `Makefile` and CI configuration (GitHub Actions) are recommended for consistent builds and automated testing.
 
----
-
-## License
-
-This project is published under the **MIT License**. See `LICENSE` for details.
-
----
-
-## Disclaimer
-
-This tool is provided for legitimate security assessment and educational purposes only. The authors and maintainers accept no responsibility for misuse or unlawful activities. It is the user's responsibility to ensure all scanning and exploitation activities are authorised.
-
----
-
-## Contact & Support
-
-- Issues: open an issue in the GitHub repository
-- Security reports: security@your-org.com
-- Discussions: use the project Discussions page
-
----
 
 ## Changelog (high level)
 
