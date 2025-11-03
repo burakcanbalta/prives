@@ -195,16 +195,6 @@ jq '.scan_info, .findings' scan.json
 - `LOW`: informational or low-impact issues
 
 ---
-
-## Safety & Legal Considerations
-
-- **Authorization**: Only run `privesc` against systems and environments for which you have explicit permission. Unauthorized scanning or exploitation can be illegal and cause harm.
-- **Audit mode**: Use `-audit` in production or on systems where changes are unacceptable. Audit mode disables exploitation and phishing features.
-- **Exploit caution**: `-exploit` may alter system state. Confirm approvals and maintenance windows before enabling.
-- **Data protection**: Scan outputs may contain sensitive information (credentials, secrets). Treat reports as sensitive artifacts and store them securely.
-
----
-
 ## Troubleshooting
 
 **Missing dependencies**
