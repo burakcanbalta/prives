@@ -261,39 +261,3 @@ make build-dev
 ```
 
 A `Makefile` and GitHub Actions CI are recommended for consistent builds and testing.
-
----
-
-## License
-
-This project is licensed under the **MIT License**. See the `LICENSE` file for details.
-
----
-
-## Legal & Safety Disclaimer
-
-`privesc` is intended for legitimate security assessments and educational use only. Running scans or exploitation against systems without explicit authorization is illegal and unethical. The authors and maintainers disclaim responsibility for misuse. Use audit mode (`-audit`) in production environments to avoid unintended changes.
-
----
-
-## Contact & Support
-
-- Issues: open an issue in the GitHub repository
-- Security reports: security@your-org.com
-- Discussions: use the project Discussions page
-
----
-
-## Changelog (high level)
-
-**v2.1.0**
-- Enhanced SMB write testing with safe commands
-- Configurable RID cycling parameters
-- Improved null-session detection
-- Rate-limiting and retry protections
-
-**v2.0.0**
-- Refactor: plugin architecture and web UI
-- Added cloud and ML risk scoring
-
----
