@@ -256,23 +256,3 @@ make test
 # Build development binary
 make build-dev
 ```
-
-A `Makefile` and CI configuration (GitHub Actions) are recommended for consistent builds and automated testing.
-
-
-## Changelog (high level)
-
-**v2.1.0**
-- Enhanced SMB write testing with safe commands
-- Configurable RID cycling parameters
-- Improved null-session detection
-- Rate-limiting and retry protections
-
-**v2.0.0**
-- Major refactor: plugin architecture and web UI
-- Added cloud and ML risk scoring
-
----
-
-*For further customisation (branding, repository links, organisation contacts), please request changes and I will update the README accordingly.*
-
